@@ -8,12 +8,8 @@
 
 样例输出:
 321323
-
-运行时间：44ms
-占用内存：5856k
 '''
 
-import operator
 from functools import cmp_to_key
 '''
 方案一：
@@ -55,23 +51,23 @@ s2就应该排在s1前面。
 '''
 
 
-def cmp(a, b):
-    if (a + b) > (b + a):
-        return 1
-    elif (a + b) == (b + a):
-        return 0
-    else:
-        return -1
-
-
 class Solution2:
+    def cmp(self, a, b):
+        if (a + b) > (b + a):
+            return 1
+        elif (a + b) == (b + a):
+            return 0
+        else:
+            return -1
+
     def PrintMinNumber(self, numbers):
         if not numbers:
             return ''
         # 将数字全部转化为字符串
         numbers = list(map(str, numbers))
         # 使用自定义的排序规则进行排序
-        numbers.sort(key=cmp_to_key(cmp))
+        # Ps. Python3.4 之后的版本，自定义排序规则需要 cmp_to_key
+        numbers.sort(key=cmp_to_key(self.cmp))
         if numbers[0] == '0':
             return 0
         else:
