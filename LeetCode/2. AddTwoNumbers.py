@@ -20,64 +20,25 @@ class ListNode:
         self.val = x
         self.next = None
 
+
 # 自己定义一套加法，注意进位就好~
 class Solution:
     def addTwoNumbers(self, l1, l2):
-        """
-        :type l1: ListNode
-        :type l2: ListNode
-        :rtype: ListNode
-        """
-        carry = 0
-        if (l1.val + l2.val) > 9:
-            lr = ListNode(l1.val + l2.val - 10)
-            carry = 1
-        else:
-            lr = ListNode(l1.val + l2.val)
+        carry = 0  # 定义进位
+        lr = ListNode(0)
         lr_buffer = lr
-        l1 = l1.next
-        l2 = l2.next
-        while (l1 is not None and l2 is not None):
-            if (l1.val + l2.val + carry) > 9:
-                lr.next = ListNode(l1.val + l2.val + carry - 10)
-                lr = lr.next
-                carry = 1
-            else:
-                lr.next = ListNode(l1.val + l2.val + carry)
-                lr = lr.next
-                carry = 0
-            l1 = l1.next
-            l2 = l2.next
+        while (l1 or l2 or carry):
+            summ = (l1.val if l1 else 0) + (l2.val if l2 else 0) + carry
+            carry = summ // 10
+            lr.next = ListNode(summ % 10)
+            lr = lr.next
+            l1 = l1.next if l1 else None
+            l2 = l2.next if l2 else None
 
-        while (l1 is not None):
-            if (l1.val + carry) > 9:
-                lr.next = ListNode(l1.val + carry - 10)
-                carry = 1
-                lr = lr.next
-            else:
-                lr.next = ListNode(l1.val + carry)
-                carry = 0
-                lr = lr.next
-            l1 = l1.next
-        while (l2 is not None):
-            if (l2.val + carry) > 9:
-                lr.next = ListNode(l2.val + carry - 10)
-                carry = 1
-                lr = lr.next
-            else:
-                lr.next = ListNode(l2.val + carry)
-                carry = 0
-                lr = lr.next
-            l2 = l2.next
-
-        if carry == 1:
-            lr.next = ListNode(1)
-
-        return lr_buffer
+        return lr_buffer.next
 
 
 slt = Solution()
-
 l1 = ListNode(2)
 l1_1 = ListNode(4)
 l1_2 = ListNode(3)
@@ -89,5 +50,4 @@ l2_2 = ListNode(4)
 l2.next = l2_1
 l2_1.next = l2_2
 result = slt.addTwoNumbers(l1, l2)
-
 print(result.val, result.next.val, result.next.next.val)
